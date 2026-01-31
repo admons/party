@@ -1,0 +1,729 @@
+/* ========================================
+   Admon's 40th Pool Party - Styles
+   ======================================== */
+
+/* CSS Variables */
+:root {
+    --turquoise: #40E0D0;
+    --turquoise-dark: #2BC4B4;
+    --flamingo-pink: #FF6B9D;
+    --sunny-yellow: #FFE135;
+    --coral: #FF6F61;
+    --sky-light: #87CEEB;
+    --sky-dark: #5BA3C6;
+    --white: #FFFFFF;
+    --text-dark: #2D3748;
+    
+    --font-main: 'Fredoka', sans-serif;
+    
+    --shadow-soft: 0 4px 20px rgba(0, 0, 0, 0.1);
+    --shadow-strong: 0 8px 30px rgba(0, 0, 0, 0.15);
+}
+
+/* Reset & Base */
+*, *::before, *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: var(--font-main);
+    min-height: 100vh;
+    overflow-x: hidden;
+    background: linear-gradient(180deg, 
+        #87CEEB 0%, 
+        #B8E4F0 30%,
+        #FFE4B5 60%,
+        #FFDAB9 80%,
+        #FFB6A3 100%
+    );
+    background-attachment: fixed;
+    color: var(--text-dark);
+}
+
+/* Confetti Canvas */
+#confetti-canvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 1000;
+}
+
+/* ========================================
+   Floating Pool Toys
+   ======================================== */
+
+.floating-toys {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 1;
+    overflow: hidden;
+}
+
+.toy {
+    position: absolute;
+    opacity: 0.9;
+    filter: drop-shadow(0 10px 20px rgba(0, 0, 0, 0.15));
+}
+
+.toy svg {
+    width: 100%;
+    height: 100%;
+}
+
+/* Flamingo */
+.flamingo {
+    width: 80px;
+    height: 100px;
+    top: 15%;
+    left: 5%;
+    animation: float-1 8s ease-in-out infinite, drift-right 25s linear infinite;
+}
+
+/* Beach Ball */
+.beach-ball {
+    width: 60px;
+    height: 60px;
+    top: 25%;
+    right: 10%;
+    animation: float-2 6s ease-in-out infinite, spin-slow 20s linear infinite, drift-left 30s linear infinite;
+}
+
+/* Donut Float */
+.donut {
+    width: 90px;
+    height: 90px;
+    top: 45%;
+    left: 8%;
+    animation: float-3 7s ease-in-out infinite, wobble 10s ease-in-out infinite;
+}
+
+/* Palm Leaf */
+.palm-leaf {
+    width: 60px;
+    height: 75px;
+    top: 10%;
+    right: 20%;
+    animation: float-1 9s ease-in-out infinite, sway 5s ease-in-out infinite;
+}
+
+/* Sunglasses */
+.sunglasses {
+    width: 70px;
+    height: 35px;
+    top: 55%;
+    right: 5%;
+    animation: float-2 8s ease-in-out infinite, drift-left 35s linear infinite;
+}
+
+/* Float Animations */
+@keyframes float-1 {
+    0%, 100% { transform: translateY(0) rotate(-3deg); }
+    50% { transform: translateY(-20px) rotate(3deg); }
+}
+
+@keyframes float-2 {
+    0%, 100% { transform: translateY(0) rotate(5deg); }
+    50% { transform: translateY(-25px) rotate(-5deg); }
+}
+
+@keyframes float-3 {
+    0%, 100% { transform: translateY(0) rotate(-2deg); }
+    50% { transform: translateY(-15px) rotate(2deg); }
+}
+
+@keyframes drift-right {
+    0% { left: -100px; }
+    100% { left: calc(100% + 100px); }
+}
+
+@keyframes drift-left {
+    0% { right: -100px; }
+    100% { right: calc(100% + 100px); }
+}
+
+@keyframes spin-slow {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+@keyframes wobble {
+    0%, 100% { transform: rotate(-5deg) scale(1); }
+    25% { transform: rotate(3deg) scale(1.02); }
+    50% { transform: rotate(-3deg) scale(1); }
+    75% { transform: rotate(5deg) scale(0.98); }
+}
+
+@keyframes sway {
+    0%, 100% { transform: rotate(-10deg); }
+    50% { transform: rotate(10deg); }
+}
+
+/* ========================================
+   Sun
+   ======================================== */
+
+.sun {
+    position: fixed;
+    top: 20px;
+    right: 30px;
+    width: 100px;
+    height: 100px;
+    z-index: 2;
+    animation: sun-pulse 4s ease-in-out infinite;
+}
+
+.sun svg {
+    width: 100%;
+    height: 100%;
+    filter: drop-shadow(0 0 30px rgba(255, 225, 53, 0.6));
+}
+
+.sun-rays {
+    animation: sun-spin 30s linear infinite;
+    transform-origin: center;
+}
+
+@keyframes sun-pulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+}
+
+@keyframes sun-spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* ========================================
+   Main Container
+   ======================================== */
+
+.container {
+    position: relative;
+    z-index: 10;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 40px 20px 200px;
+}
+
+/* ========================================
+   Hero Section
+   ======================================== */
+
+.hero {
+    text-align: center;
+    max-width: 600px;
+    animation: fade-in-up 1s ease-out;
+}
+
+@keyframes fade-in-up {
+    0% {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Splash Text */
+.splash-text {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--turquoise);
+    text-transform: uppercase;
+    letter-spacing: 8px;
+    margin-bottom: 10px;
+    animation: splash 0.8s ease-out;
+    text-shadow: 2px 2px 0 var(--white);
+}
+
+@keyframes splash {
+    0% {
+        opacity: 0;
+        transform: scale(2) rotate(-10deg);
+    }
+    60% {
+        transform: scale(0.9) rotate(5deg);
+    }
+    100% {
+        opacity: 1;
+        transform: scale(1) rotate(0deg);
+    }
+}
+
+/* Title */
+.title {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.title-line {
+    font-size: 2.5rem;
+    font-weight: 600;
+    color: var(--text-dark);
+    text-shadow: 2px 2px 0 var(--white);
+}
+
+.title-line.birthday {
+    color: var(--flamingo-pink);
+    font-size: 3rem;
+}
+
+.big-number {
+    font-size: 10rem;
+    font-weight: 700;
+    line-height: 1;
+    background: linear-gradient(135deg, var(--flamingo-pink), var(--coral), var(--sunny-yellow));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    filter: drop-shadow(4px 4px 0 rgba(255, 107, 157, 0.3));
+    animation: number-bounce 2s ease-in-out infinite;
+}
+
+@keyframes number-bounce {
+    0%, 100% { transform: translateY(0) rotate(-2deg); }
+    50% { transform: translateY(-10px) rotate(2deg); }
+}
+
+/* Subtitle */
+.subtitle {
+    font-size: 2.8rem;
+    font-weight: 700;
+    color: var(--turquoise-dark);
+    margin-bottom: 30px;
+    text-shadow: 3px 3px 0 var(--white);
+    animation: wiggle 3s ease-in-out infinite;
+}
+
+@keyframes wiggle {
+    0%, 100% { transform: rotate(-2deg); }
+    50% { transform: rotate(2deg); }
+}
+
+/* Party Details */
+.party-details {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-bottom: 20px;
+}
+
+.detail-card {
+    background: var(--white);
+    padding: 15px 25px;
+    border-radius: 20px;
+    box-shadow: var(--shadow-soft);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.detail-card:hover {
+    transform: translateY(-5px) rotate(2deg);
+    box-shadow: var(--shadow-strong);
+}
+
+.detail-icon {
+    font-size: 1.5rem;
+}
+
+.detail-text {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--text-dark);
+}
+
+/* Tagline */
+.tagline {
+    font-size: 1.3rem;
+    color: var(--text-dark);
+    margin-bottom: 30px;
+    opacity: 0.9;
+}
+
+/* ========================================
+   Calendar Buttons
+   ======================================== */
+
+.calendar-buttons {
+    display: flex;
+    gap: 15px;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 16px 28px;
+    border: none;
+    border-radius: 50px;
+    font-family: var(--font-main);
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.btn::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    background: rgba(255, 255, 255, 0.3);
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    transition: width 0.6s ease, height 0.6s ease;
+}
+
+.btn:hover::before {
+    width: 300px;
+    height: 300px;
+}
+
+.btn-icon {
+    width: 20px;
+    height: 20px;
+    flex-shrink: 0;
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, var(--flamingo-pink), var(--coral));
+    color: var(--white);
+    box-shadow: 0 4px 15px rgba(255, 107, 157, 0.4);
+}
+
+.btn-primary:hover {
+    transform: translateY(-3px) scale(1.02);
+    box-shadow: 0 8px 25px rgba(255, 107, 157, 0.5);
+}
+
+.btn-secondary {
+    background: var(--white);
+    color: var(--turquoise-dark);
+    box-shadow: var(--shadow-soft);
+    border: 3px solid var(--turquoise);
+}
+
+.btn-secondary:hover {
+    transform: translateY(-3px) scale(1.02);
+    box-shadow: var(--shadow-strong);
+    background: var(--turquoise);
+    color: var(--white);
+}
+
+/* Button Click Animation */
+.btn:active {
+    transform: scale(0.95);
+}
+
+/* ========================================
+   Waves
+   ======================================== */
+
+.waves-container {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 200px;
+    z-index: 5;
+    pointer-events: none;
+}
+
+.waves {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
+.wave {
+    animation: wave-motion 8s ease-in-out infinite;
+}
+
+.wave-back {
+    animation-delay: 0s;
+}
+
+.wave-mid {
+    animation-delay: -2s;
+}
+
+.wave-front {
+    animation-delay: -4s;
+}
+
+@keyframes wave-motion {
+    0%, 100% {
+        transform: translateX(0) translateY(0);
+    }
+    25% {
+        transform: translateX(-25px) translateY(5px);
+    }
+    50% {
+        transform: translateX(0) translateY(10px);
+    }
+    75% {
+        transform: translateX(25px) translateY(5px);
+    }
+}
+
+/* Pool Floor */
+.pool-floor {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 60px;
+    background: 
+        linear-gradient(90deg, 
+            var(--turquoise) 25%, 
+            var(--turquoise-dark) 25%, 
+            var(--turquoise-dark) 50%, 
+            var(--turquoise) 50%, 
+            var(--turquoise) 75%, 
+            var(--turquoise-dark) 75%
+        );
+    background-size: 80px 80px;
+    opacity: 0.6;
+}
+
+/* ========================================
+   Responsive Design
+   ======================================== */
+
+/* Tablet */
+@media (max-width: 768px) {
+    .sun {
+        width: 70px;
+        height: 70px;
+        top: 15px;
+        right: 15px;
+    }
+    
+    .title-line {
+        font-size: 2rem;
+    }
+    
+    .title-line.birthday {
+        font-size: 2.5rem;
+    }
+    
+    .big-number {
+        font-size: 7rem;
+    }
+    
+    .subtitle {
+        font-size: 2.2rem;
+    }
+    
+    .flamingo {
+        width: 60px;
+        height: 75px;
+    }
+    
+    .beach-ball {
+        width: 45px;
+        height: 45px;
+    }
+    
+    .donut {
+        width: 70px;
+        height: 70px;
+    }
+    
+    .palm-leaf {
+        width: 45px;
+        height: 56px;
+    }
+    
+    .sunglasses {
+        width: 50px;
+        height: 25px;
+    }
+}
+
+/* Mobile */
+@media (max-width: 480px) {
+    .container {
+        padding: 30px 15px 180px;
+    }
+    
+    .sun {
+        width: 50px;
+        height: 50px;
+        top: 10px;
+        right: 10px;
+    }
+    
+    .splash-text {
+        font-size: 1.2rem;
+        letter-spacing: 5px;
+    }
+    
+    .title-line {
+        font-size: 1.6rem;
+    }
+    
+    .title-line.birthday {
+        font-size: 2rem;
+    }
+    
+    .big-number {
+        font-size: 5rem;
+    }
+    
+    .subtitle {
+        font-size: 1.8rem;
+        margin-bottom: 25px;
+    }
+    
+    .party-details {
+        flex-direction: column;
+        align-items: center;
+        gap: 12px;
+    }
+    
+    .detail-card {
+        padding: 12px 20px;
+    }
+    
+    .detail-text {
+        font-size: 1rem;
+    }
+    
+    .tagline {
+        font-size: 1.1rem;
+        padding: 0 10px;
+    }
+    
+    .calendar-buttons {
+        flex-direction: column;
+        width: 100%;
+        padding: 0 20px;
+    }
+    
+    .btn {
+        width: 100%;
+        justify-content: center;
+        padding: 14px 24px;
+    }
+    
+    /* Hide some floating toys on mobile for cleaner look */
+    .palm-leaf,
+    .sunglasses {
+        display: none;
+    }
+    
+    .flamingo {
+        width: 50px;
+        height: 62px;
+        top: 20%;
+        left: 2%;
+    }
+    
+    .beach-ball {
+        width: 35px;
+        height: 35px;
+        top: 30%;
+    }
+    
+    .donut {
+        width: 55px;
+        height: 55px;
+        top: 50%;
+        left: 3%;
+    }
+    
+    .waves-container {
+        height: 150px;
+    }
+}
+
+/* Extra small devices */
+@media (max-width: 350px) {
+    .big-number {
+        font-size: 4rem;
+    }
+    
+    .title-line.birthday {
+        font-size: 1.7rem;
+    }
+    
+    .subtitle {
+        font-size: 1.5rem;
+    }
+}
+
+/* ========================================
+   Accessibility
+   ======================================== */
+
+@media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+}
+
+/* Focus States */
+.btn:focus {
+    outline: 3px solid var(--sunny-yellow);
+    outline-offset: 3px;
+}
+
+.btn:focus:not(:focus-visible) {
+    outline: none;
+}
+
+/* ========================================
+   Print Styles
+   ======================================== */
+
+@media print {
+    .floating-toys,
+    .sun,
+    .waves-container,
+    #confetti-canvas {
+        display: none !important;
+    }
+    
+    body {
+        background: white !important;
+    }
+    
+    .container {
+        padding: 20px;
+    }
+}
+

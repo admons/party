@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admon's 40th Birthday Pool Party! 🎉</title>
+    
+    <!-- Open Graph / Social Media -->
+    <meta property="og:title" content="Admon's 40th Birthday Pool Party!">
+    <meta property="og:description" content="Join me for a splashing good time! April 25th, 2026 - 11AM to 5PM">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://admon.party">
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Confetti Canvas -->
+    <canvas id="confetti-canvas"></canvas>
+    
+    <!-- Floating Pool Toys -->
+    <div class="floating-toys">
+        <!-- Flamingo -->
+        <div class="toy flamingo">
+            <svg viewBox="0 0 100 120" xmlns="http://www.w3.org/2000/svg">
+                <ellipse cx="50" cy="90" rx="35" ry="20" fill="#FF6B9D"/>
+                <ellipse cx="50" cy="85" rx="28" ry="15" fill="#FF8FB3"/>
+                <path d="M45 85 Q30 60 35 40 Q38 25 50 20 Q62 25 58 35 L55 38 Q52 35 50 38 Q55 42 52 50 Q48 65 50 85" fill="#FF6B9D"/>
+                <circle cx="52" cy="28" r="3" fill="#333"/>
+                <path d="M50 35 L45 40 L50 38" fill="#FF8C00"/>
+            </svg>
+        </div>
+        
+        <!-- Beach Ball -->
+        <div class="toy beach-ball">
+            <svg viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="40" cy="40" r="35" fill="#FFE135"/>
+                <path d="M40 5 Q60 40 40 75" fill="#FF6B9D"/>
+                <path d="M40 5 Q20 40 40 75" fill="#40E0D0"/>
+                <path d="M5 40 Q40 20 75 40" fill="#FF6F61"/>
+                <circle cx="40" cy="40" r="35" fill="none" stroke="#fff" stroke-width="2"/>
+                <ellipse cx="30" cy="25" rx="8" ry="5" fill="rgba(255,255,255,0.4)"/>
+            </svg>
+        </div>
+        
+        <!-- Donut Float -->
+        <div class="toy donut">
+            <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="50" cy="50" r="45" fill="#FF6F61"/>
+                <circle cx="50" cy="50" r="42" fill="#E85A4F"/>
+                <circle cx="50" cy="50" r="18" fill="#40E0D0"/>
+                <circle cx="50" cy="50" r="15" fill="#2BC4B4"/>
+                <!-- Sprinkles -->
+                <rect x="30" y="25" width="6" height="3" rx="1" fill="#FFE135" transform="rotate(-20 33 26)"/>
+                <rect x="60" y="30" width="6" height="3" rx="1" fill="#FF6B9D" transform="rotate(30 63 31)"/>
+                <rect x="65" y="55" width="6" height="3" rx="1" fill="#40E0D0" transform="rotate(-10 68 56)"/>
+                <rect x="55" y="70" width="6" height="3" rx="1" fill="#FFE135" transform="rotate(45 58 71)"/>
+                <rect x="30" y="65" width="6" height="3" rx="1" fill="#FF6B9D" transform="rotate(-30 33 66)"/>
+                <rect x="25" y="45" width="6" height="3" rx="1" fill="#fff" transform="rotate(15 28 46)"/>
+                <rect x="45" y="22" width="6" height="3" rx="1" fill="#fff" transform="rotate(-5 48 23)"/>
+                <rect x="70" y="45" width="6" height="3" rx="1" fill="#FFE135" transform="rotate(60 73 46)"/>
+            </svg>
+        </div>
+        
+        <!-- Palm Leaf -->
+        <div class="toy palm-leaf">
+            <svg viewBox="0 0 80 100" xmlns="http://www.w3.org/2000/svg">
+                <path d="M40 95 L40 50" stroke="#8B4513" stroke-width="4" stroke-linecap="round"/>
+                <path d="M40 55 Q20 40 5 50 Q25 45 40 55" fill="#2ECC71"/>
+                <path d="M40 55 Q60 40 75 50 Q55 45 40 55" fill="#27AE60"/>
+                <path d="M40 50 Q15 30 10 15 Q30 35 40 50" fill="#2ECC71"/>
+                <path d="M40 50 Q65 30 70 15 Q50 35 40 50" fill="#27AE60"/>
+                <path d="M40 45 Q40 20 35 5 Q45 25 40 45" fill="#58D68D"/>
+            </svg>
+        </div>
+        
+        <!-- Sunglasses -->
+        <div class="toy sunglasses">
+            <svg viewBox="0 0 100 50" xmlns="http://www.w3.org/2000/svg">
+                <path d="M10 25 Q10 10 30 10 L35 10 Q40 10 45 15 L55 15 Q60 10 65 10 L70 10 Q90 10 90 25 Q90 40 70 40 L65 40 Q55 40 50 30 Q45 40 35 40 L30 40 Q10 40 10 25" fill="#333"/>
+                <path d="M15 25 Q15 15 30 15 L32 15 Q38 15 42 20 L42 25 Q38 35 30 35 Q15 35 15 25" fill="#4A90D9"/>
+                <path d="M58 20 Q62 15 68 15 L70 15 Q85 15 85 25 Q85 35 70 35 Q62 35 58 25 L58 20" fill="#4A90D9"/>
+                <ellipse cx="25" cy="22" rx="5" ry="3" fill="rgba(255,255,255,0.3)"/>
+                <ellipse cx="72" cy="22" rx="5" ry="3" fill="rgba(255,255,255,0.3)"/>
+            </svg>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <main class="container">
+        <!-- Sun -->
+        <div class="sun">
+            <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="50" cy="50" r="25" fill="#FFE135"/>
+                <g class="sun-rays">
+                    <line x1="50" y1="15" x2="50" y2="5" stroke="#FFE135" stroke-width="4" stroke-linecap="round"/>
+                    <line x1="50" y1="95" x2="50" y2="85" stroke="#FFE135" stroke-width="4" stroke-linecap="round"/>
+                    <line x1="15" y1="50" x2="5" y2="50" stroke="#FFE135" stroke-width="4" stroke-linecap="round"/>
+                    <line x1="95" y1="50" x2="85" y2="50" stroke="#FFE135" stroke-width="4" stroke-linecap="round"/>
+                    <line x1="25" y1="25" x2="18" y2="18" stroke="#FFE135" stroke-width="4" stroke-linecap="round"/>
+                    <line x1="75" y1="75" x2="82" y2="82" stroke="#FFE135" stroke-width="4" stroke-linecap="round"/>
+                    <line x1="75" y1="25" x2="82" y2="18" stroke="#FFE135" stroke-width="4" stroke-linecap="round"/>
+                    <line x1="25" y1="75" x2="18" y2="82" stroke="#FFE135" stroke-width="4" stroke-linecap="round"/>
+                </g>
+            </svg>
+        </div>
+
+        <div class="hero">
+            <div class="splash-text">SPLASH!</div>
+            
+            <h1 class="title">
+                <span class="title-line">Admon's</span>
+                <span class="big-number">40</span>
+                <span class="title-line birthday">Birthday</span>
+            </h1>
+            
+            <h2 class="subtitle">Pool Party!</h2>
+            
+            <div class="party-details">
+                <div class="detail-card">
+                    <span class="detail-icon">📅</span>
+                    <span class="detail-text">April 25, 2026</span>
+                </div>
+                <div class="detail-card">
+                    <span class="detail-icon">⏰</span>
+                    <span class="detail-text">11:00 AM - 5:00 PM</span>
+                </div>
+            </div>
+            
+            <p class="tagline">Join me for a splashing good time!</p>
+            
+            <div class="calendar-buttons">
+                <button class="btn btn-primary" id="google-cal-btn">
+                    <svg class="btn-icon" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V10h14v10zm0-12H5V6h14v2z"/>
+                    </svg>
+                    Add to Google Calendar
+                </button>
+                <button class="btn btn-secondary" id="ics-download-btn">
+                    <svg class="btn-icon" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/>
+                    </svg>
+                    Download for Calendar
+                </button>
+            </div>
+        </div>
+    </main>
+
+    <!-- Waves -->
+    <div class="waves-container">
+        <svg class="waves" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320" preserveAspectRatio="none">
+            <path class="wave wave-back" fill="#40E0D0" fill-opacity="0.4" d="M0,160L48,176C96,192,192,224,288,213.3C384,203,480,149,576,149.3C672,149,768,203,864,208C960,213,1056,171,1152,149.3C1248,128,1344,128,1392,128L1440,128L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"></path>
+            <path class="wave wave-mid" fill="#40E0D0" fill-opacity="0.6" d="M0,224L48,213.3C96,203,192,181,288,181.3C384,181,480,203,576,218.7C672,235,768,245,864,234.7C960,224,1056,192,1152,181.3C1248,171,1344,181,1392,186.7L1440,192L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"></path>
+            <path class="wave wave-front" fill="#40E0D0" d="M0,256L48,261.3C96,267,192,277,288,272C384,267,480,245,576,240C672,235,768,245,864,261.3C960,277,1056,299,1152,293.3C1248,288,1344,256,1392,240L1440,224L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"></path>
+        </svg>
+        <!-- Pool floor pattern -->
+        <div class="pool-floor"></div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
+
