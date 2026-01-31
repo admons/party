@@ -8,11 +8,11 @@
 // ========================================
 
 const EVENT = {
-    title: "Admon's 40th Birthday Pool Party! 🎉🏊‍♂️",
-    description: "Join me for a splashing good time at my 40th birthday pool party! Bring your swimsuit and sunscreen!",
+    title: "יום הולדת 40 לאדמון 🎉🏊‍♂️",
+    description: "בואו לחגוג איתי! מסיבת בריכה ליום הולדת 40",
     startDate: new Date(2026, 3, 25, 11, 0, 0), // April 25, 2026, 11:00 AM
     endDate: new Date(2026, 3, 25, 17, 0, 0),   // April 25, 2026, 5:00 PM
-    location: "" // Location is private
+    location: "עוד לא ידוע"
 };
 
 // ========================================
@@ -268,16 +268,6 @@ document.addEventListener('DOMContentLoaded', () => {
         googleBtn.addEventListener('click', (e) => {
             createRipple(e);
             window.open(getGoogleCalendarUrl(), '_blank');
-            confetti.burst(30);
-        });
-    }
-    
-    // ICS Download button
-    const icsBtn = document.getElementById('ics-download-btn');
-    if (icsBtn) {
-        icsBtn.addEventListener('click', (e) => {
-            createRipple(e);
-            downloadICSFile();
             confetti.burst(30);
         });
     }

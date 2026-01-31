@@ -178,7 +178,7 @@ body {
 .sun {
     position: fixed;
     top: 20px;
-    right: 30px;
+    left: 30px;
     width: 100px;
     height: 100px;
     z-index: 2;
@@ -239,32 +239,6 @@ body {
     100% {
         opacity: 1;
         transform: translateY(0);
-    }
-}
-
-/* Splash Text */
-.splash-text {
-    font-size: 1.5rem;
-    font-weight: 700;
-    color: var(--turquoise);
-    text-transform: uppercase;
-    letter-spacing: 8px;
-    margin-bottom: 10px;
-    animation: splash 0.8s ease-out;
-    text-shadow: 2px 2px 0 var(--white);
-}
-
-@keyframes splash {
-    0% {
-        opacity: 0;
-        transform: scale(2) rotate(-10deg);
-    }
-    60% {
-        transform: scale(0.9) rotate(5deg);
-    }
-    100% {
-        opacity: 1;
-        transform: scale(1) rotate(0deg);
     }
 }
 
@@ -527,7 +501,7 @@ body {
         width: 70px;
         height: 70px;
         top: 15px;
-        right: 15px;
+        left: 15px;
     }
     
     .title-line {
@@ -582,7 +556,7 @@ body {
         width: 50px;
         height: 50px;
         top: 10px;
-        right: 10px;
+        left: 10px;
     }
     
     .splash-text {
