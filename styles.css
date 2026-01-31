@@ -333,8 +333,15 @@ body {
 .tagline {
     font-size: 1.3rem;
     color: var(--text-dark);
-    margin-bottom: 30px;
+    margin-bottom: 8px;
     opacity: 0.9;
+}
+
+.tagline-sub {
+    font-size: 1.1rem;
+    color: var(--text-dark);
+    margin-bottom: 30px;
+    opacity: 0.7;
 }
 
 /* ========================================
@@ -416,6 +423,38 @@ body {
 /* Button Click Animation */
 .btn:active {
     transform: scale(0.95);
+}
+
+/* ========================================
+   Admon Photo
+   ======================================== */
+
+.admon-photo {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 25vw;
+    max-width: 300px;
+    z-index: 20;
+    pointer-events: none;
+}
+
+.admon-photo img {
+    width: 100%;
+    height: auto;
+    display: block;
+}
+
+@media (max-width: 768px) {
+    .admon-photo {
+        width: 30vw;
+    }
+}
+
+@media (max-width: 480px) {
+    .admon-photo {
+        width: 35vw;
+    }
 }
 
 /* ========================================
