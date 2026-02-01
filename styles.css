@@ -225,7 +225,7 @@ body {
     height: 80px;
     top: 25%;
     right: 10%;
-    animation: float-3d-2 10s ease-in-out infinite, spin-3d 15s linear infinite;
+    animation: float-beach-ball 12s ease-in-out infinite;
 }
 
 /* Donut Float */
@@ -297,6 +297,21 @@ body {
     100% { transform: rotateZ(360deg); }
 }
 
+@keyframes float-beach-ball {
+    0%, 100% {
+        transform: translateY(0) rotate(0deg);
+    }
+    25% {
+        transform: translateY(-25px) rotate(90deg);
+    }
+    50% {
+        transform: translateY(-10px) rotate(180deg);
+    }
+    75% {
+        transform: translateY(-30px) rotate(270deg);
+    }
+}
+
 @keyframes sway-3d {
     0%, 100% { transform: rotateZ(-15deg); }
     50% { transform: rotateZ(15deg); }
@@ -348,8 +363,8 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
-    padding: 40px 20px 200px;
+    justify-content: flex-start;
+    padding: 20px 20px 180px;
 }
 
 /* ========================================
@@ -360,13 +375,7 @@ body {
     text-align: center;
     max-width: 700px;
     padding: 50px 40px;
-    background: var(--glass-bg);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
-    border: 1px solid var(--glass-border);
-    border-radius: 30px;
-    box-shadow: var(--glass-shadow), inset 0 1px 1px rgba(255, 255, 255, 0.1);
-    animation: fade-in-up 1s ease-out, glow-pulse 4s ease-in-out infinite;
+    animation: fade-in-up 1s ease-out;
 }
 
 @keyframes fade-in-up {
@@ -769,7 +778,7 @@ body {
     }
     
     .container {
-        padding: 30px 15px 180px;
+        padding: 15px 15px 160px;
     }
     
     .sun {
