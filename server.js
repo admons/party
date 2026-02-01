@@ -41,13 +41,21 @@ function sendTelegramNotification(name) {
 }
 
 const server = http.createServer((req, res) => {
-    const urlObj = new URL(req.url);
+    const [pathname, queryString] = req.url.split('?');
+    
+    // Parse query params manually
+    const params = {};
+    if (queryString) {
+        queryString.split('&').forEach(param => {
+            const [key, value] = param.split('=');
+            if (key) params[key] = decodeURIComponent(value || '');
+        });
+    }
     
     // Check for n parameter (base64 encoded) and send notification
-    const encodedName = urlObj.searchParams.get('n');
-    if (encodedName) {
+    if (params.n) {
         try {
-            const name = Buffer.from(encodedName, 'base64').toString('utf8');
+            const name = Buffer.from(params.n, 'base64').toString('utf8');
             sendTelegramNotification(name);
         } catch (e) {
             console.log('Failed to decode name:', e.message);
@@ -55,7 +63,7 @@ const server = http.createServer((req, res) => {
     }
     
     // Static file serving
-    let filePath = urlObj.pathname === '/' ? '/index.html' : urlObj.pathname;
+    let filePath = pathname === '/' ? '/index.html' : pathname;
     filePath = path.join(__dirname, filePath);
     
     const ext = path.extname(filePath);
