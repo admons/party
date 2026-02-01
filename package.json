@@ -1,0 +1,13 @@
+{
+  "name": "admon-party",
+  "version": "1.0.0",
+  "description": "Admon's 40th Birthday Pool Party",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "dotenv": "^16.6.1",
+    "node-telegram-bot-api": "^0.66.0"
+  }
+}
