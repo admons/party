@@ -132,9 +132,13 @@ class ScratchReveal {
         this.ctx.arc(x, y, radius, 0, Math.PI * 2);
         this.ctx.clip();
         
-        // Draw the bg image in this clipped area
+        // Draw the bg image at its natural size, centered on screen
         if (this.image.complete) {
-            this.ctx.drawImage(this.image, 0, 0, this.canvas.width, this.canvas.height);
+            const imgWidth = this.image.naturalWidth;
+            const imgHeight = this.image.naturalHeight;
+            const offsetX = (this.canvas.width - imgWidth) / 2;
+            const offsetY = (this.canvas.height - imgHeight) / 2;
+            this.ctx.drawImage(this.image, offsetX, offsetY, imgWidth, imgHeight);
         }
         this.ctx.restore();
         
@@ -166,35 +170,30 @@ class ScratchReveal {
         if (this.hasShrunk) return;
         this.hasShrunk = true;
         
-        // Calculate target size
+        // Get image natural dimensions
+        const imgWidth = this.image.naturalWidth;
+        const imgHeight = this.image.naturalHeight;
+        const startX = (window.innerWidth - imgWidth) / 2;
+        const startY = (window.innerHeight - imgHeight) / 2;
+        
+        // Calculate target size (bottom left corner)
         const targetWidth = Math.min(window.innerWidth * 0.25, 300);
-        const imgRatio = this.image.naturalHeight / this.image.naturalWidth;
-        const targetHeight = targetWidth * imgRatio;
-        
-        // Calculate scale and translation
-        const scaleX = targetWidth / window.innerWidth;
-        const scaleY = targetHeight / window.innerHeight;
-        const scale = Math.min(scaleX, scaleY);
-        
-        // Target position (bottom left)
+        const targetHeight = (imgHeight / imgWidth) * targetWidth;
         const targetX = 0;
         const targetY = window.innerHeight - targetHeight;
         
-        // Create a new image element
         const revealedImg = document.createElement('img');
         revealedImg.src = this.image.src;
         revealedImg.className = 'revealed-bg-image';
         revealedImg.style.cssText = `
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100vw;
-            height: 100vh;
-            object-fit: cover;
+            top: ${startY}px;
+            left: ${startX}px;
+            width: ${imgWidth}px;
+            height: ${imgHeight}px;
             z-index: 150;
             pointer-events: none;
-            transform-origin: bottom left;
-            transition: transform 1.2s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.3s ease;
+            transition: all 1.2s cubic-bezier(0.34, 1.56, 0.64, 1);
         `;
         
         document.body.appendChild(revealedImg);
@@ -210,10 +209,13 @@ class ScratchReveal {
             hintLabel.style.opacity = '0';
         }
         
-        // Trigger smooth scale animation
+        // Trigger smooth animation to corner
         requestAnimationFrame(() => {
             requestAnimationFrame(() => {
-                revealedImg.style.transform = `scale(${scale})`;
+                revealedImg.style.top = `${targetY}px`;
+                revealedImg.style.left = `${targetX}px`;
+                revealedImg.style.width = `${targetWidth}px`;
+                revealedImg.style.height = `${targetHeight}px`;
             });
         });
         
