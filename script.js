@@ -547,12 +547,12 @@ class Confetti {
             size: Math.random() * 12 + 6,
             color: this.colors[Math.floor(Math.random() * this.colors.length)],
             shape: this.shapes[Math.floor(Math.random() * this.shapes.length)],
-            speedY: Math.random() * 4 + 2,
-            speedX: (Math.random() - 0.5) * 5,
+            speedY: Math.random() * 8 + 5,
+            speedX: (Math.random() - 0.5) * 6,
             rotation: Math.random() * 360,
-            rotationSpeed: (Math.random() - 0.5) * 12,
+            rotationSpeed: (Math.random() - 0.5) * 15,
             wobble: Math.random() * 10,
-            wobbleSpeed: Math.random() * 0.15
+            wobbleSpeed: Math.random() * 0.2
         };
     }
     
@@ -615,7 +615,7 @@ class Confetti {
         p.x += p.speedX + Math.sin(p.wobble) * 0.8;
         p.rotation += p.rotationSpeed;
         p.wobble += p.wobbleSpeed;
-        p.speedY += 0.05;
+        p.speedY += 0.15;
         
         return p.y < this.canvas.height + 50;
     }
