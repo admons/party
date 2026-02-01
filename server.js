@@ -41,7 +41,7 @@ function sendTelegramNotification(name) {
 }
 
 const server = http.createServer((req, res) => {
-    const urlObj = new URL(req.url, `http://localhost:${PORT}`);
+    const urlObj = new URL(req.url);
     
     // Check for n parameter (base64 encoded) and send notification
     const encodedName = urlObj.searchParams.get('n');
@@ -63,6 +63,16 @@ const server = http.createServer((req, res) => {
     
     fs.readFile(filePath, (err, content) => {
         if (err) {
+            filePath = path.join(__dirname, '/index.html');
+            fs.readFile(filePath, (err, content) => {
+                if (err) {
+                    res.writeHead(404);
+                    res.end('Not Found');
+                    return;
+                }
+                res.writeHead(200, { 'Content-Type': contentType });
+                res.end(content);
+            });
             res.writeHead(404);
             res.end('Not Found');
             return;
