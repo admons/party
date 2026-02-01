@@ -166,11 +166,21 @@ class ScratchReveal {
         if (this.hasShrunk) return;
         this.hasShrunk = true;
         
-        // Target position: bottom left corner
-        const targetWidth = window.innerWidth * 0.25;
-        const targetHeight = targetWidth * (this.image.naturalHeight / this.image.naturalWidth);
+        // Calculate target size
+        const targetWidth = Math.min(window.innerWidth * 0.25, 300);
+        const imgRatio = this.image.naturalHeight / this.image.naturalWidth;
+        const targetHeight = targetWidth * imgRatio;
         
-        // Create a new image element from the canvas
+        // Calculate scale and translation
+        const scaleX = targetWidth / window.innerWidth;
+        const scaleY = targetHeight / window.innerHeight;
+        const scale = Math.min(scaleX, scaleY);
+        
+        // Target position (bottom left)
+        const targetX = 0;
+        const targetY = window.innerHeight - targetHeight;
+        
+        // Create a new image element
         const revealedImg = document.createElement('img');
         revealedImg.src = this.image.src;
         revealedImg.className = 'revealed-bg-image';
@@ -182,8 +192,9 @@ class ScratchReveal {
             height: 100vh;
             object-fit: cover;
             z-index: 150;
-            transition: all 1s cubic-bezier(0.4, 0, 0.2, 1);
             pointer-events: none;
+            transform-origin: bottom left;
+            transition: transform 1.2s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.3s ease;
         `;
         
         document.body.appendChild(revealedImg);
@@ -199,15 +210,10 @@ class ScratchReveal {
             hintLabel.style.opacity = '0';
         }
         
-        // Trigger animation after a frame
+        // Trigger smooth scale animation
         requestAnimationFrame(() => {
             requestAnimationFrame(() => {
-                revealedImg.style.top = 'auto';
-                revealedImg.style.bottom = '0';
-                revealedImg.style.left = '0';
-                revealedImg.style.width = '25vw';
-                revealedImg.style.maxWidth = '300px';
-                revealedImg.style.height = 'auto';
+                revealedImg.style.transform = `scale(${scale})`;
             });
         });
         
@@ -221,7 +227,7 @@ class ScratchReveal {
             if (window.partyConfetti) {
                 window.partyConfetti.burst(150);
             }
-        }, 1000);
+        }, 1200);
     }
 }
 
