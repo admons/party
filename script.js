@@ -166,11 +166,9 @@ class ScratchReveal {
         if (this.hasShrunk) return;
         this.hasShrunk = true;
         
-        // Get the admon-photo element position
-        const admonPhoto = document.querySelector('.admon-photo');
-        if (!admonPhoto) return;
-        
-        const targetRect = admonPhoto.getBoundingClientRect();
+        // Target position: bottom left corner
+        const targetWidth = window.innerWidth * 0.25;
+        const targetHeight = targetWidth * (this.image.naturalHeight / this.image.naturalWidth);
         
         // Create a new image element from the canvas
         const revealedImg = document.createElement('img');
@@ -194,34 +192,35 @@ class ScratchReveal {
         this.canvas.style.transition = 'opacity 0.3s ease';
         this.canvas.style.opacity = '0';
         
+        // Hide the scratch hint label
+        const hintLabel = document.querySelector('.scratch-hint-label');
+        if (hintLabel) {
+            hintLabel.style.transition = 'opacity 0.5s ease';
+            hintLabel.style.opacity = '0';
+        }
+        
         // Trigger animation after a frame
         requestAnimationFrame(() => {
             requestAnimationFrame(() => {
-                revealedImg.style.top = `${targetRect.top}px`;
-                revealedImg.style.left = `${targetRect.left}px`;
-                revealedImg.style.width = `${targetRect.width}px`;
-                revealedImg.style.height = `${targetRect.height}px`;
-                revealedImg.style.borderRadius = '0';
+                revealedImg.style.top = 'auto';
+                revealedImg.style.bottom = '0';
+                revealedImg.style.left = '0';
+                revealedImg.style.width = '25vw';
+                revealedImg.style.maxWidth = '300px';
+                revealedImg.style.height = 'auto';
             });
         });
         
-        // After animation, replace admon photo
+        // After animation, finalize and trigger confetti
         setTimeout(() => {
-            // Hide original admon photo
-            admonPhoto.style.opacity = '0';
-            
-            // Update revealed image to match admon photo styling
-            revealedImg.style.position = 'fixed';
-            revealedImg.style.bottom = '0';
-            revealedImg.style.left = '0';
-            revealedImg.style.top = 'auto';
-            revealedImg.style.width = admonPhoto.style.width || '25vw';
-            revealedImg.style.maxWidth = '300px';
-            revealedImg.style.height = 'auto';
             revealedImg.style.zIndex = '20';
-            
             // Hide the scratch container
             this.container.style.display = 'none';
+            
+            // Trigger confetti celebration!
+            if (window.partyConfetti) {
+                window.partyConfetti.burst(150);
+            }
         }, 1000);
     }
 }
@@ -708,6 +707,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Initialize confetti
     const confettiCanvas = document.getElementById('confetti-canvas');
     const confetti = new Confetti(confettiCanvas);
+    window.partyConfetti = confetti; // Make available globally for scratch reveal
     
     // Burst confetti on page load
     setTimeout(() => confetti.burst(100), 500);
