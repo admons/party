@@ -177,7 +177,7 @@ class ScratchReveal {
         const startY = (window.innerHeight - imgHeight) / 2;
         
         // Calculate target size (bottom left corner)
-        const targetWidth = Math.min(window.innerWidth * 0.25, 300);
+        const targetWidth = Math.min(window.innerWidth * 0.30, 360);
         const targetHeight = (imgHeight / imgWidth) * targetWidth;
         const targetX = 0;
         const targetY = window.innerHeight - targetHeight;
@@ -202,11 +202,14 @@ class ScratchReveal {
         this.canvas.style.transition = 'opacity 0.3s ease';
         this.canvas.style.opacity = '0';
         
-        // Hide the scratch hint label
+        // Hide and remove the scratch hint label
         const hintLabel = document.querySelector('.scratch-hint-label');
         if (hintLabel) {
             hintLabel.style.transition = 'opacity 0.5s ease';
             hintLabel.style.opacity = '0';
+            setTimeout(() => {
+                hintLabel.remove();
+            }, 500);
         }
         
         // Trigger smooth animation to corner
