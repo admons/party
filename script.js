@@ -31,15 +31,14 @@ class ScratchReveal {
         this.resize();
         window.addEventListener('resize', () => this.resize());
         
-        // Canvas events - scratching reveals the image
-        this.canvas.addEventListener('mousedown', (e) => this.handleStart(e));
-        this.canvas.addEventListener('mousemove', (e) => this.handleMove(e));
-        this.canvas.addEventListener('mouseup', () => this.stopDraw());
-        this.canvas.addEventListener('mouseleave', () => this.stopDraw());
+        // Listen on document for scratch events (allows button to work)
+        document.addEventListener('mousedown', (e) => this.handleStart(e));
+        document.addEventListener('mousemove', (e) => this.handleMove(e));
+        document.addEventListener('mouseup', () => this.stopDraw());
         
-        this.canvas.addEventListener('touchstart', (e) => this.handleStart(e), { passive: false });
-        this.canvas.addEventListener('touchmove', (e) => this.handleMove(e), { passive: false });
-        this.canvas.addEventListener('touchend', () => this.stopDraw());
+        document.addEventListener('touchstart', (e) => this.handleStart(e), { passive: false });
+        document.addEventListener('touchmove', (e) => this.handleMove(e), { passive: false });
+        document.addEventListener('touchend', () => this.stopDraw());
     }
     
     resize() {
@@ -73,13 +72,8 @@ class ScratchReveal {
     handleStart(e) {
         const pos = this.getPosition(e);
         
-        // If on button, let the click through
+        // If on button, don't scratch - let button handle the click
         if (this.isOnButton(pos.x, pos.y)) {
-            // Temporarily disable pointer events to let click through
-            this.canvas.style.pointerEvents = 'none';
-            setTimeout(() => {
-                this.canvas.style.pointerEvents = 'auto';
-            }, 100);
             return;
         }
         
