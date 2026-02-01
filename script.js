@@ -19,6 +19,10 @@ class ScratchReveal {
         this.isDrawing = false;
         this.lastX = 0;
         this.lastY = 0;
+        this.scratchedPixels = 0;
+        this.totalPixels = 0;
+        this.shrinkTimeout = null;
+        this.hasShrunk = false;
         
         this.init();
     }
@@ -41,6 +45,7 @@ class ScratchReveal {
     resize() {
         this.canvas.width = window.innerWidth;
         this.canvas.height = window.innerHeight;
+        this.totalPixels = this.canvas.width * this.canvas.height;
         // Canvas starts empty/transparent - scratching draws the image onto it
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
     }
@@ -78,17 +83,26 @@ class ScratchReveal {
             return;
         }
         
+        // If already shrunk, don't allow more scratching
+        if (this.hasShrunk) return;
+        
         e.preventDefault();
         this.isDrawing = true;
         this.lastX = pos.x;
         this.lastY = pos.y;
+        
+        // Clear any pending shrink timeout
+        if (this.shrinkTimeout) {
+            clearTimeout(this.shrinkTimeout);
+            this.shrinkTimeout = null;
+        }
         
         // Draw image at touch point
         this.revealAt(pos.x, pos.y);
     }
     
     handleMove(e) {
-        if (!this.isDrawing) return;
+        if (!this.isDrawing || this.hasShrunk) return;
         e.preventDefault();
         
         const pos = this.getPosition(e);
@@ -109,11 +123,13 @@ class ScratchReveal {
     }
     
     revealAt(x, y) {
+        const radius = 40;
+        
         // Draw the image through a circular mask at this point
         this.ctx.globalCompositeOperation = 'source-over';
         this.ctx.save();
         this.ctx.beginPath();
-        this.ctx.arc(x, y, 40, 0, Math.PI * 2);
+        this.ctx.arc(x, y, radius, 0, Math.PI * 2);
         this.ctx.clip();
         
         // Draw the bg image in this clipped area
@@ -121,10 +137,92 @@ class ScratchReveal {
             this.ctx.drawImage(this.image, 0, 0, this.canvas.width, this.canvas.height);
         }
         this.ctx.restore();
+        
+        // Track scratched area (approximate)
+        this.scratchedPixels += Math.PI * radius * radius;
+    }
+    
+    getScratchedPercent() {
+        return (this.scratchedPixels / this.totalPixels) * 100;
     }
     
     stopDraw() {
         this.isDrawing = false;
+        
+        if (this.hasShrunk) return;
+        
+        // Check if scratched more than 30%
+        const percent = this.getScratchedPercent();
+        
+        if (percent >= 30) {
+            // Start 2 second timer to shrink
+            this.shrinkTimeout = setTimeout(() => {
+                this.shrinkToCorner();
+            }, 2000);
+        }
+    }
+    
+    shrinkToCorner() {
+        if (this.hasShrunk) return;
+        this.hasShrunk = true;
+        
+        // Get the admon-photo element position
+        const admonPhoto = document.querySelector('.admon-photo');
+        if (!admonPhoto) return;
+        
+        const targetRect = admonPhoto.getBoundingClientRect();
+        
+        // Create a new image element from the canvas
+        const revealedImg = document.createElement('img');
+        revealedImg.src = this.image.src;
+        revealedImg.className = 'revealed-bg-image';
+        revealedImg.style.cssText = `
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            object-fit: cover;
+            z-index: 150;
+            transition: all 1s cubic-bezier(0.4, 0, 0.2, 1);
+            pointer-events: none;
+        `;
+        
+        document.body.appendChild(revealedImg);
+        
+        // Hide the canvas
+        this.canvas.style.transition = 'opacity 0.3s ease';
+        this.canvas.style.opacity = '0';
+        
+        // Trigger animation after a frame
+        requestAnimationFrame(() => {
+            requestAnimationFrame(() => {
+                revealedImg.style.top = `${targetRect.top}px`;
+                revealedImg.style.left = `${targetRect.left}px`;
+                revealedImg.style.width = `${targetRect.width}px`;
+                revealedImg.style.height = `${targetRect.height}px`;
+                revealedImg.style.borderRadius = '0';
+            });
+        });
+        
+        // After animation, replace admon photo
+        setTimeout(() => {
+            // Hide original admon photo
+            admonPhoto.style.opacity = '0';
+            
+            // Update revealed image to match admon photo styling
+            revealedImg.style.position = 'fixed';
+            revealedImg.style.bottom = '0';
+            revealedImg.style.left = '0';
+            revealedImg.style.top = 'auto';
+            revealedImg.style.width = admonPhoto.style.width || '25vw';
+            revealedImg.style.maxWidth = '300px';
+            revealedImg.style.height = 'auto';
+            revealedImg.style.zIndex = '20';
+            
+            // Hide the scratch container
+            this.container.style.display = 'none';
+        }, 1000);
     }
 }
 
