@@ -4,7 +4,7 @@
  */
 
 // ========================================
-// Scratch to Reveal
+// Scratch to Reveal (scratch to show bg.png on top)
 // ========================================
 
 class ScratchReveal {
@@ -17,166 +17,114 @@ class ScratchReveal {
         
         this.ctx = this.canvas.getContext('2d');
         this.isDrawing = false;
-        this.revealed = false;
-        this.scratchedPercent = 0;
+        this.lastX = 0;
+        this.lastY = 0;
         
-        // Wait for image to load
-        this.image.onload = () => this.init();
-        if (this.image.complete) this.init();
+        this.init();
     }
     
     init() {
         this.resize();
         window.addEventListener('resize', () => this.resize());
         
-        // Show the scratch container
-        this.container.classList.add('active');
-        
-        // Add hint text
-        const hint = document.createElement('div');
-        hint.className = 'scratch-hint';
-        hint.textContent = '👆 גרד כדי לגלות!';
-        this.container.appendChild(hint);
-        this.hint = hint;
-        
-        // Fill canvas with cover color/pattern
-        this.fillCover();
-        
-        // Mouse events
-        this.canvas.addEventListener('mousedown', (e) => this.startDraw(e));
-        this.canvas.addEventListener('mousemove', (e) => this.draw(e));
+        // Canvas events - scratching reveals the image
+        this.canvas.addEventListener('mousedown', (e) => this.handleStart(e));
+        this.canvas.addEventListener('mousemove', (e) => this.handleMove(e));
         this.canvas.addEventListener('mouseup', () => this.stopDraw());
         this.canvas.addEventListener('mouseleave', () => this.stopDraw());
         
-        // Touch events
-        this.canvas.addEventListener('touchstart', (e) => this.startDraw(e), { passive: false });
-        this.canvas.addEventListener('touchmove', (e) => this.draw(e), { passive: false });
+        this.canvas.addEventListener('touchstart', (e) => this.handleStart(e), { passive: false });
+        this.canvas.addEventListener('touchmove', (e) => this.handleMove(e), { passive: false });
         this.canvas.addEventListener('touchend', () => this.stopDraw());
     }
     
     resize() {
         this.canvas.width = window.innerWidth;
         this.canvas.height = window.innerHeight;
-        if (this.ctx) this.fillCover();
+        // Canvas starts empty/transparent - scratching draws the image onto it
+        this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
     }
     
-    fillCover() {
-        // Create gradient cover
-        const gradient = this.ctx.createLinearGradient(0, 0, this.canvas.width, this.canvas.height);
-        gradient.addColorStop(0, '#667eea');
-        gradient.addColorStop(0.5, '#764ba2');
-        gradient.addColorStop(1, '#f093fb');
-        
-        this.ctx.fillStyle = gradient;
-        this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
-        
-        // Add some sparkle pattern
-        this.ctx.fillStyle = 'rgba(255, 255, 255, 0.1)';
-        for (let i = 0; i < 100; i++) {
-            const x = Math.random() * this.canvas.width;
-            const y = Math.random() * this.canvas.height;
-            const size = Math.random() * 4 + 1;
-            this.ctx.beginPath();
-            this.ctx.arc(x, y, size, 0, Math.PI * 2);
-            this.ctx.fill();
-        }
-        
-        // Add text
-        this.ctx.fillStyle = 'rgba(255, 255, 255, 0.8)';
-        this.ctx.font = 'bold 24px Fredoka';
-        this.ctx.textAlign = 'center';
-        this.ctx.fillText('🎁 גרד כאן! 🎁', this.canvas.width / 2, this.canvas.height / 2);
+    isOnButton(x, y) {
+        const btn = document.getElementById('google-cal-btn');
+        if (!btn) return false;
+        const rect = btn.getBoundingClientRect();
+        return x >= rect.left && x <= rect.right && y >= rect.top && y <= rect.bottom;
     }
     
     getPosition(e) {
-        const rect = this.canvas.getBoundingClientRect();
-        if (e.touches) {
+        if (e.touches && e.touches.length > 0) {
             return {
-                x: e.touches[0].clientX - rect.left,
-                y: e.touches[0].clientY - rect.top
+                x: e.touches[0].clientX,
+                y: e.touches[0].clientY
             };
         }
         return {
-            x: e.clientX - rect.left,
-            y: e.clientY - rect.top
+            x: e.clientX,
+            y: e.clientY
         };
     }
     
-    startDraw(e) {
+    handleStart(e) {
+        const pos = this.getPosition(e);
+        
+        // If on button, let the click through
+        if (this.isOnButton(pos.x, pos.y)) {
+            // Temporarily disable pointer events to let click through
+            this.canvas.style.pointerEvents = 'none';
+            setTimeout(() => {
+                this.canvas.style.pointerEvents = 'auto';
+            }, 100);
+            return;
+        }
+        
         e.preventDefault();
         this.isDrawing = true;
-        const pos = this.getPosition(e);
         this.lastX = pos.x;
         this.lastY = pos.y;
         
-        // Hide hint after first touch
-        if (this.hint) {
-            this.hint.style.opacity = '0';
-        }
+        // Draw image at touch point
+        this.revealAt(pos.x, pos.y);
     }
     
-    draw(e) {
-        if (!this.isDrawing || this.revealed) return;
+    handleMove(e) {
+        if (!this.isDrawing) return;
         e.preventDefault();
         
         const pos = this.getPosition(e);
         
-        this.ctx.globalCompositeOperation = 'destination-out';
-        this.ctx.lineWidth = 60;
-        this.ctx.lineCap = 'round';
-        this.ctx.lineJoin = 'round';
+        // Draw line of revealed image
+        const dist = Math.sqrt(Math.pow(pos.x - this.lastX, 2) + Math.pow(pos.y - this.lastY, 2));
+        const steps = Math.max(1, Math.floor(dist / 10));
         
-        this.ctx.beginPath();
-        this.ctx.moveTo(this.lastX, this.lastY);
-        this.ctx.lineTo(pos.x, pos.y);
-        this.ctx.stroke();
+        for (let i = 0; i <= steps; i++) {
+            const t = i / steps;
+            const x = this.lastX + (pos.x - this.lastX) * t;
+            const y = this.lastY + (pos.y - this.lastY) * t;
+            this.revealAt(x, y);
+        }
         
         this.lastX = pos.x;
         this.lastY = pos.y;
+    }
+    
+    revealAt(x, y) {
+        // Draw the image through a circular mask at this point
+        this.ctx.globalCompositeOperation = 'source-over';
+        this.ctx.save();
+        this.ctx.beginPath();
+        this.ctx.arc(x, y, 40, 0, Math.PI * 2);
+        this.ctx.clip();
         
-        // Check scratch percentage
-        this.checkReveal();
+        // Draw the bg image in this clipped area
+        if (this.image.complete) {
+            this.ctx.drawImage(this.image, 0, 0, this.canvas.width, this.canvas.height);
+        }
+        this.ctx.restore();
     }
     
     stopDraw() {
         this.isDrawing = false;
-    }
-    
-    checkReveal() {
-        const imageData = this.ctx.getImageData(0, 0, this.canvas.width, this.canvas.height);
-        const pixels = imageData.data;
-        let transparent = 0;
-        
-        // Sample every 100th pixel for performance
-        for (let i = 3; i < pixels.length; i += 400) {
-            if (pixels[i] === 0) transparent++;
-        }
-        
-        const total = pixels.length / 400;
-        this.scratchedPercent = (transparent / total) * 100;
-        
-        // If 40% revealed, show the full image
-        if (this.scratchedPercent > 40 && !this.revealed) {
-            this.revealed = true;
-            this.revealFull();
-        }
-    }
-    
-    revealFull() {
-        // Fade out canvas
-        this.canvas.style.transition = 'opacity 1s ease';
-        this.canvas.style.opacity = '0';
-        
-        // After animation, hide the whole scratch container
-        setTimeout(() => {
-            this.container.style.transition = 'opacity 0.5s ease';
-            this.container.style.opacity = '0';
-            
-            setTimeout(() => {
-                this.container.classList.remove('active');
-                this.container.style.display = 'none';
-            }, 500);
-        }, 2000);
     }
 }
 
