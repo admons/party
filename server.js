@@ -66,6 +66,7 @@ const server = http.createServer((req, res) => {
             filePath = path.join(__dirname, '/index.html');
             fs.readFile(filePath, (err, content) => {
                 if (err) {
+                    console.error(err)
                     res.writeHead(404);
                     res.end('Not Found');
                     return;
@@ -73,8 +74,6 @@ const server = http.createServer((req, res) => {
                 res.writeHead(200, { 'Content-Type': contentType });
                 res.end(content);
             });
-            res.writeHead(404);
-            res.end('Not Found');
             return;
         }
         res.writeHead(200, { 'Content-Type': contentType });
