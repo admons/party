@@ -29,7 +29,7 @@ function sendTelegramNotification(name) {
         return;
     }
     
-    const message = `🎉 ${name} פתח/ה את ההזמנה למסיבה!`;
+    const message = `${name}`;
     
     bot.sendMessage(TELEGRAM_CHAT_ID, message)
         .then(() => {
@@ -43,10 +43,15 @@ function sendTelegramNotification(name) {
 const server = http.createServer((req, res) => {
     const urlObj = new URL(req.url, `http://localhost:${PORT}`);
     
-    // Check for n parameter and send notification
-    const name = urlObj.searchParams.get('n');
-    if (name) {
-        sendTelegramNotification(decodeURIComponent(name));
+    // Check for n parameter (base64 encoded) and send notification
+    const encodedName = urlObj.searchParams.get('n');
+    if (encodedName) {
+        try {
+            const name = Buffer.from(encodedName, 'base64').toString('utf8');
+            sendTelegramNotification(name);
+        } catch (e) {
+            console.log('Failed to decode name:', e.message);
+        }
     }
     
     // Static file serving
