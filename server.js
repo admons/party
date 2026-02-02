@@ -65,7 +65,16 @@ const server = http.createServer((req, res) => {
     if (pathname.startsWith('/api/notify/')) {
         const code = pathname.split('/api/notify/')[1];
         const name = guests[code] || `אורח #${code}`;
-        sendTelegramNotification(name);
+        
+        // Check if user tried to change the code
+        const triedCode = params.tried;
+        let message = name;
+        if (triedCode && triedCode !== code) {
+            const triedName = guests[triedCode] || `#${triedCode}`;
+            message = `${name} (ניסה להיכנס בתור ${triedName})`;
+        }
+        
+        sendTelegramNotification(message);
         res.writeHead(200, { 'Content-Type': 'application/json' });
         res.end(JSON.stringify({ success: true, name }));
         return;

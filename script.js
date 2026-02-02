@@ -10,20 +10,29 @@
 (function notifyVisitor() {
     // Get code from URL path (e.g., /1, /25)
     const pathCode = window.location.pathname.slice(1); // Remove leading /
-    let code = /^\d+$/.test(pathCode) ? pathCode : null;
+    const currentCode = /^\d+$/.test(pathCode) ? pathCode : null;
+    const originalCode = localStorage.getItem('visitor_code');
     
-    if (code && !localStorage.getItem('visitor_code')) {
-        // Save the code for future visits
-        localStorage.setItem('visitor_code', code);
-    } else if (!code) {
-        // Use saved code if available
-        code = localStorage.getItem('visitor_code');
+    // Save original code on first visit
+    if (currentCode && !originalCode) {
+        localStorage.setItem('visitor_code', currentCode);
     }
     
-    if (!code) code = "0";
+    // Build the notify URL
+    let notifyUrl = '/api/notify/';
     
-    fetch('/api/notify/' + encodeURIComponent(code))
-        .catch(() => {});
+    if (originalCode && currentCode && originalCode !== currentCode) {
+        // User tried to change the code - send both
+        notifyUrl += originalCode + '?tried=' + currentCode;
+    } else if (currentCode) {
+        notifyUrl += currentCode;
+    } else if (originalCode) {
+        notifyUrl += originalCode;
+    } else {
+        notifyUrl += '0';
+    }
+    
+    fetch(notifyUrl).catch(() => {});
 })();
 
 // ========================================
