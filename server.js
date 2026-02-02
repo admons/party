@@ -9,6 +9,15 @@ const PORT = process.env.PORT || 3002;
 const TELEGRAM_BOT_TOKEN = process.env.TELEGRAM_BOT_TOKEN;
 const TELEGRAM_CHAT_ID = process.env.TELEGRAM_CHAT_ID;
 
+// Load guest mapping
+let guests = {};
+try {
+    guests = JSON.parse(fs.readFileSync(path.join(__dirname, 'guests.json'), 'utf8'));
+    console.log(`📋 Loaded ${Object.keys(guests).length} guests`);
+} catch (e) {
+    console.log('⚠️  No guests.json found');
+}
+
 // Initialize Telegram bot (polling disabled - we only send messages)
 const bot = TELEGRAM_BOT_TOKEN ? new TelegramBot(TELEGRAM_BOT_TOKEN) : null;
 
@@ -54,16 +63,11 @@ const server = http.createServer((req, res) => {
     
     // API endpoint for visitor notification (called from client JS)
     if (pathname === '/api/notify' && params.n) {
-        try {
-            const name = Buffer.from(params.n, 'base64').toString('utf8');
-            sendTelegramNotification(name);
-            res.writeHead(200, { 'Content-Type': 'application/json' });
-            res.end(JSON.stringify({ success: true }));
-        } catch (e) {
-            console.log('Failed to decode name:', e.message);
-            res.writeHead(400, { 'Content-Type': 'application/json' });
-            res.end(JSON.stringify({ error: 'Invalid name' }));
-        }
+        const code = params.n;
+        const name = guests[code] || `אורח #${code}`;
+        sendTelegramNotification(name);
+        res.writeHead(200, { 'Content-Type': 'application/json' });
+        res.end(JSON.stringify({ success: true, name }));
         return;
     }
     
@@ -84,7 +88,7 @@ const server = http.createServer((req, res) => {
                     res.end('Not Found');
                     return;
                 }
-                res.writeHead(200, { 'Content-Type': contentType });
+                res.writeHead(200, { 'Content-Type': 'text/html' });
                 res.end(content);
             });
             return;

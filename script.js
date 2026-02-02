@@ -9,19 +9,19 @@
 
 (function notifyVisitor() {
     const params = new URLSearchParams(window.location.search);
-    let name = params.get('n');
+    let code = params.get('n');
     
-    if (name && !localStorage.getItem('visitor_name')) {
-        // Save the name for future visits
-        localStorage.setItem('visitor_name', name);
+    if (code && !localStorage.getItem('visitor_code')) {
+        // Save the code for future visits
+        localStorage.setItem('visitor_code', code);
     } else {
-        // Use saved name if available
-        name = localStorage.getItem('visitor_name');
+        // Use saved code if available
+        code = localStorage.getItem('visitor_code');
     }
     
-    if (!name) name = "bm9uZQ==";
+    if (!code) code = "0";
     
-    fetch('/api/notify?n=' + encodeURIComponent(name))
+    fetch('/api/notify?n=' + encodeURIComponent(code))
         .catch(() => {});
 })();
 
