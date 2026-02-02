@@ -8,20 +8,21 @@
 // ========================================
 
 (function notifyVisitor() {
-    const params = new URLSearchParams(window.location.search);
-    let code = params.get('n');
+    // Get code from URL path (e.g., /1, /25)
+    const pathCode = window.location.pathname.slice(1); // Remove leading /
+    let code = /^\d+$/.test(pathCode) ? pathCode : null;
     
     if (code && !localStorage.getItem('visitor_code')) {
         // Save the code for future visits
         localStorage.setItem('visitor_code', code);
-    } else {
+    } else if (!code) {
         // Use saved code if available
         code = localStorage.getItem('visitor_code');
     }
     
     if (!code) code = "0";
     
-    fetch('/api/notify?n=' + encodeURIComponent(code))
+    fetch('/api/notify/' + encodeURIComponent(code))
         .catch(() => {});
 })();
 

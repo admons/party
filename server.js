@@ -62,8 +62,8 @@ const server = http.createServer((req, res) => {
     }
     
     // API endpoint for visitor notification (called from client JS)
-    if (pathname === '/api/notify' && params.n) {
-        const code = params.n;
+    if (pathname.startsWith('/api/notify/')) {
+        const code = pathname.split('/api/notify/')[1];
         const name = guests[code] || `אורח #${code}`;
         sendTelegramNotification(name);
         res.writeHead(200, { 'Content-Type': 'application/json' });
@@ -71,8 +71,12 @@ const server = http.createServer((req, res) => {
         return;
     }
     
+    // Check if pathname is a guest code (e.g., /1, /25)
+    const guestCode = pathname.slice(1); // Remove leading /
+    const isGuestPath = /^\d+$/.test(guestCode) && guests[guestCode];
+    
     // Static file serving
-    let filePath = pathname === '/' ? '/index.html' : pathname;
+    let filePath = (pathname === '/' || isGuestPath) ? '/index.html' : pathname;
     filePath = path.join(__dirname, filePath);
     
     const ext = path.extname(filePath);
