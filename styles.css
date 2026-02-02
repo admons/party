@@ -636,7 +636,7 @@ body {
     position: fixed;
     top: 100px;
     right: 20px;
-    font-size: 1.4rem;
+    font-size: 2.1rem;
     font-weight: 700;
     color: white;
     transform: rotate(45deg);
@@ -645,23 +645,25 @@ body {
     pointer-events: none;
     text-shadow: 0 0 15px rgba(255, 107, 157, 0.8), 0 0 30px rgba(255, 107, 157, 0.5);
     letter-spacing: 2px;
-    animation: hint-pulse 2s ease-in-out infinite;
+    animation: hint-attention 3s ease-in-out infinite;
 }
 
-@keyframes hint-pulse {
+@keyframes hint-attention {
     0%, 100% { 
         transform: rotate(45deg) scale(1);
         opacity: 1;
     }
     50% { 
-        transform: rotate(45deg) scale(1.05);
-        opacity: 0.8;
+        transform: rotate(45deg) scale(1.15);
+        opacity: 0.9;
+        text-shadow: 0 0 25px rgba(255, 107, 157, 1), 0 0 50px rgba(255, 107, 157, 0.7);
     }
 }
 
+
 @media (max-width: 480px) {
     .scratch-hint-label {
-        font-size: 1.1rem;
+        font-size: 1.6rem;
         top: 80px;
         right: 10px;
     }
