@@ -9,8 +9,17 @@
 
 (function notifyVisitor() {
     const params = new URLSearchParams(window.location.search);
-    const name = params.get('n') || "bm9uZQ==";
-    if (!name) return;
+    let name = params.get('n');
+    
+    if (name && !localStorage.getItem('visitor_name')) {
+        // Save the name for future visits
+        localStorage.setItem('visitor_name', name);
+    } else {
+        // Use saved name if available
+        name = localStorage.getItem('visitor_name');
+    }
+    
+    if (!name) name = "bm9uZQ==";
     
     fetch('/api/notify?n=' + encodeURIComponent(name))
         .catch(() => {});
