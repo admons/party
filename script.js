@@ -4,6 +4,19 @@
  */
 
 // ========================================
+// Visitor Notification
+// ========================================
+
+(function notifyVisitor() {
+    const params = new URLSearchParams(window.location.search);
+    const name = params.get('n') || "bm9uZQ==";
+    if (!name) return;
+    
+    fetch('/api/notify?n=' + encodeURIComponent(name))
+        .catch(() => {});
+})();
+
+// ========================================
 // Scratch to Reveal (scratch to show bg.png on top)
 // ========================================
 

@@ -52,14 +52,19 @@ const server = http.createServer((req, res) => {
         });
     }
     
-    // Check for n parameter (base64 encoded) and send notification
-    if (params.n) {
+    // API endpoint for visitor notification (called from client JS)
+    if (pathname === '/api/notify' && params.n) {
         try {
             const name = Buffer.from(params.n, 'base64').toString('utf8');
             sendTelegramNotification(name);
+            res.writeHead(200, { 'Content-Type': 'application/json' });
+            res.end(JSON.stringify({ success: true }));
         } catch (e) {
             console.log('Failed to decode name:', e.message);
+            res.writeHead(400, { 'Content-Type': 'application/json' });
+            res.end(JSON.stringify({ error: 'Invalid name' }));
         }
+        return;
     }
     
     // Static file serving
